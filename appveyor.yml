@@ -209,7 +209,7 @@ build: off
 
 install:
   - ps: Install-Product node 6 $env:platform
-  - npm install electron@%ELECTRON%
+  - npm install electron-prebuilt@%ELECTRON%
   - npm install --runtime=electron --target=%REBUILD_FOR% --disturl=https://atom.io/download/electron
 
 
