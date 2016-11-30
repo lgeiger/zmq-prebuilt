@@ -12,12 +12,19 @@ addons:
 matrix:
   include:
     - node_js: "6"
-      env: DEPLOY="true"
-    - node_js: "6"
       env: ELECTRON="1.4.10"
-    - os: osx
-      node_js: "6"
-      env: DEPLOY="true"
+    - node_js: "6"
+      env: ELECTRON="1.4.9"
+    - node_js: "6"
+      env: ELECTRON="1.4.0"
+    - node_js: "6"
+      env: ELECTRON="1.3.0"
+    - node_js: "6"
+      env: ELECTRON="1.2.0"
+    - node_js: "6"
+      env: ELECTRON="1.1.0"
+    - node_js: "6"
+      env: ELECTRON="1.0.0"
 env:
   global:
     - GH_REF: github.com/nteract/zmq-prebuilt.git
@@ -29,25 +36,7 @@ before_install:
   - test "$(uname)" = "Darwin"  || export CXX=g++-4.9 CC=gcc-4.9
 
 install:
-  - '[ -z "$ELECTRON" ] || npm install electron@${ELECTRON}'
-  - 'if [[ -z "$ELECTRON" ]]; then npm install; else npm install --runtime=electron --target=${ELECTRON} --disturl=https://atom.io/download/electron; fi'
+  - npm install electron@1.4.10
+  - npm install --runtime=electron --target=${ELECTRON} --disturl=https://atom.io/download/electron
 
-script: if [[ -z "$ELECTRON" ]]; then travis_retry npm run coverage; else travis_retry npm run test:electron; fi
-
-after_success:
-  - bash ./scripts/publish_docs.sh
-  - 'if [[ $DEPLOY == true && $TRAVIS_OS_NAME == linux ]]; then bash <(curl -s https://codecov.io/bash); fi'
-
-deploy:
-  provider: script
-  skip_cleanup: true
-  # Linking to prebuild directly since it doesn't work inside a npm script.
-  script:
-    - node_modules/prebuild/bin.js --all --strip -u $GH_TOKEN
-  on:
-    condition: "$DEPLOY = true"
-    tags: true
-
-notifications:
-  slack:
-    secure: nklWvK1Mvoj5zly8PO0WmgQdakaSa5Ixwbxw4+1yyIKgyEUbyHzu0oySMAuyMPPV3nLaTaB/bwFxvrsUP6lxoO1CvQMUTrucLm3H5FXDDuTBBw5/tREFyuUy6XPeVsTPdL9ltrvCn8mTBYNZOM/3BWq6mV0XDHpxAIgE3FA2AUTrNoAxLqXC/V7ZmTnDYuH2T/cdeyP+Ri0UDuszUn/dzTM/fOSVpJ/J74JylJ5FH7x5z9lnD6T/916t8//i4tzoEaFkS4V7QgAj0Bta8BEMP0BN40Wap9UgXfrzafCnHDjcbKRoyVEs09kWMbrdY572EGiow2B+QOlYELLYCcD00VH71zDCpw1Ji6di3v+CxCzxFcNyZz8i/Hb8PIfYTyHV2C43X/doVzC3MVllw+d3IVTR0smn2jwjhr+szm9MDQcnUxq5zuOCiAMzE51hbhLQATUNQIiqsD0X+NK3o5urb/Fjb6I6q3MO7GJkuvsda1ni5OEPeFAlYKjvgBiwUZnc32uBHfd3iGzbdwzihSKreuIdVTCtmlnhVmM0ztg5E+BQ8SxWJPxLw5c+9ZaEja5bVCkZF4L3P/EcsdBQ1YmorsROgf/p+PsrnqKAy9zU/NynQQYODx28IPcuQgJbhzeTUEINnFej513BRnkREgjLY5bjXY6iLjKdlRo8kPVqrj8=
+script: npm run test:electron
