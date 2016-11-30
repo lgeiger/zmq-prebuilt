@@ -214,4 +214,5 @@ install:
 
 
 test_script:
-  - npm run test:electron
+  - set ELECTRON_RUN_AS_NODE=1
+  - node_modules\.bin\electron examples\smoketest.js

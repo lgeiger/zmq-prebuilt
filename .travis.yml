@@ -219,4 +219,4 @@ install:
   - npm install electron-prebuilt@${ELECTRON}
   - npm install --runtime=electron --target=${REBUILD_FOR} --disturl=https://atom.io/download/electron
 
-script: npm run test:electron
+script: ELECTRON_RUN_AS_NODE=1 node_modules/electron-prebuilt/cli.js examples/smoketest.js
