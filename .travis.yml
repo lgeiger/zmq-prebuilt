@@ -211,8 +211,6 @@ matrix:
     env: REBUILD_FOR="0.30.8" ELECTRON="0.30.0"
 
 before_install:
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   - test "$(uname)" = "Darwin"  || export CXX=g++-4.9 CC=gcc-4.9
 
 install:
